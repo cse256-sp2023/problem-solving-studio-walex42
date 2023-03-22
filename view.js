@@ -1,6 +1,34 @@
 // ---- Define your dialogs  and panels here ----
 
+//permissions
+let panel = define_new_effective_permissions('effectPerm', add_info_col = true, which_permissions = null)
+$('#sidepanel').append(panel)
 
+//user input
+let userInput = define_new_user_select_field('user_select', 'Change', on_user_change = function(selected_user){
+    $('#effectPerm').attr('username', selected_user)
+})
+$('#sidepanel').append(userInput)
+
+//dialog
+let diagBox = define_new_dialog('dialog_box', title='', options = {})
+$('.perm_info').click(function(){
+
+    $('#dialog_box').empty()
+    my_file_obj_var = path_to_file[$('#effectPerm').attr('filepath')]
+    my_user_obj_var = all_users[$('#effectPerm').attr('username')]
+    perm_to_check = $(this).attr('permission_name')
+    let explanation = allow_user_action(my_file_obj_var, my_user_obj_var, perm_to_check, explain_why = true)
+    let explanation_text = get_explanation_text(explanation)
+    $('#dialog_box').append(explanation_text)
+
+})
+$('.perm_info').append(diagBox)
+
+
+
+//---Set File Path---
+$('#effectPerm').attr('filepath', '/C')
 
 // ---- Display file structure ----
 
@@ -72,3 +100,4 @@ $('.permbutton').click( function( e ) {
 
 // ---- Assign unique ids to everything that doesn't have an ID ----
 $('#html-loc').find('*').uniqueId() 
+
